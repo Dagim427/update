@@ -1,0 +1,46 @@
+.services-page h1 {
+  font-weight: bold;
+  color: #0d6efd;
+}
+
+.service-card {
+  border-radius: 1rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  background: #f8f9fa;
+}
+
+.service-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.1);
+}
+
+.service-icon {
+  font-size: 2.5rem;
+  color: #0d6efd;
+}
+
+/* Pulse animation */
+.pulse-icon {
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.15);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Sticky footer if content is short */
+body, html {
+  height: 100%;
+}
+
+.services-page {
+  flex: 1;
+}

@@ -1,0 +1,36 @@
+.bg-header-footer {
+  background-color: #a4cbe1 !important ;
+}
+
+.bg-button {
+  background-color: #6fa3d8 !important;
+}
+
+.bg-sidebar-header {
+  background-color: #1f4e78;
+}
+
+.bg-sidebar-body {
+  background-color: #387a99;
+}
+
+.text-color {
+  color: #0e3865;
+}
+
+.message {
+  border-radius: 5px;
+  text-align: center;
+  font-weight: bold;
+  padding: 14px;
+}
+
+.message.success {
+  background-color: #d4edda;
+  color: #345747;
+}
+
+.message.error {
+  background-color: #f8d7da;
+  color: #721c24;
+}

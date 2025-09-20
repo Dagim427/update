@@ -1,0 +1,17 @@
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* You can remove most layout-related styles and rely on Bootstrap */
+
+.social-media-img {
+  width: 30px;
+  transition: transform 0.2s ease-in-out;
+}
+
+.social-media-img:hover {
+  transform: scale(1.1);
+}
