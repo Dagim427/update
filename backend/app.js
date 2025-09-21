@@ -13,30 +13,31 @@ const doctorRoute = require("./routes/doctorRoute");
 const homeRoute = require("./routes/homeRoute");
 const labTechnicianRoute = require("./routes/labTechnicianRoute");
 const patientRoute = require("./routes/patientRoute");
+const pharmacistRoute = require("./routes/pharmacistRoute");
 
 // Initialize App
 const app = express();
 const PORT = process.env.PORT || 5000;
 const globalLimiter = rateLimit({
-    windowMs: 1 * 60 * 1000,  // 1 minute
-    max: 100, // Limit each IP to 100 requests per windowMs
-    message: 'Too many requests, please try again later.',
-    standardHeaders: true,
-    legacyHeaders: false,
-    trustProxy: true,
-  });
+  windowMs: 1 * 60 * 1000, // 1 minute
+  max: 100, // Limit each IP to 100 requests per windowMs
+  message: "Too many requests, please try again later.",
+  standardHeaders: true,
+  legacyHeaders: false,
+  trustProxy: true,
+});
 // ─── Middlewares ───────────────────────────────────────────────
 
-app.use(cors(
-  {
+app.use(
+  cors({
     origin: process.env.V1 || "http://localhost:5173",
     methods: ["GET", "POST", "PUT", "DELETE"],
     credentials: true,
-  }
-));
+  })
+);
 
 app.use(express.json());
-app.use(timeout('60s'));
+app.use(timeout("60s"));
 app.use(globalLimiter);
 // ─── Routes ───────────────────────────────────────────────────
 app.use("/api/users", userRoute);
@@ -47,6 +48,7 @@ app.use("/api/doctor", doctorRoute);
 app.use("/api/home", homeRoute);
 app.use("/api/lab-technician", labTechnicianRoute);
 app.use("/api/patient", patientRoute);
+app.use("/api/pharmacist", pharmacistRoute);
 
 // ─── Health Check ─────────────────────────────────────────────
 app.get("/", (req, res) => {

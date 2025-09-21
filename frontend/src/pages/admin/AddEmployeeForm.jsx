@@ -16,7 +16,7 @@ function AddEmployeeForm() {
   const roleDom = useRef();
   const phoneNumberDom = useRef();
   const emailDom = useRef();
-  const specialtyDom = useRef(); // 
+  const specialtyDom = useRef(); //
 
   const doctorSpecialties = [
     "ENT Specialist",
@@ -74,7 +74,7 @@ function AddEmployeeForm() {
         Role: roleValue,
         Phone_number: phoneNumberValue,
         Email: emailValue,
-        doctorSpecialties: specialtyValue, 
+        doctorSpecialties: specialtyValue,
       });
 
       setSuccessMessage(true);
@@ -197,6 +197,7 @@ function AddEmployeeForm() {
                   <option value="clerk">Clerk</option>
                   <option value="lab technician">Lab Technician</option>
                   <option value="triage room">Triage Room</option>
+                  <option value="pharmacist">Pharmacist</option>
                 </select>
               </div>
 
