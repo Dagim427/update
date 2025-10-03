@@ -51,6 +51,8 @@ import ClerkProfile from "./pages/clerk/ClerkProfile";
 import TriageRoomProfile from "./pages/triage-room/TriageRoomProfile";
 import LabTechnicianProfile from "./pages/lab-technician/LabTechnicianProfile";
 
+import PharmacistDashboard from "./pages/pharmacist/PharmacistDashboard";
+
 function App() {
   return (
     <div>
@@ -318,6 +320,24 @@ function App() {
         />
 
         <Route path="/unauthorized" element={<Unauthorized />} />
+
+         <Route
+          path="/pharmacist"
+          element={
+            // <ProtectedRoute allowedRoles={["patient"]}>
+              <PharmacistDashboard />
+            // </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/pharmacist/prescription-read"
+          element={
+            // <ProtectedRoute allowedRoles={["patient"]}>
+              <PrescriptionRead />
+            // </ProtectedRoute>
+          }
+        />
       </Routes>
     </div>
   );

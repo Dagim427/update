@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
-import Navbar from '../../components/navbar/Navbar';
-import PharmacistSidebar from '../../components/sidebar/PharmacistSidebar';
-import PrescriptionReadForm from './PrescriptionReadForm';
+import Navbar from '../navbar/Navbar';
+import PharmacistSidebar from '../sidebar/PharmacistSidebar';
+import PharmacistContent from '../content/PharmacistContent';
 
 
-const PatientRegisteration = () => {
+const DashboardPatient = () => {
   const [isMobileNavVisible, setMobileNavVisible] = useState(false);
 
   const toggleMobileNav = () => {
@@ -19,10 +19,10 @@ const PatientRegisteration = () => {
       />
       <div className="dashboard-app">
         <Navbar toggleMobileNav={toggleMobileNav} />
-        <PrescriptionReadForm />
+        <PharmacistContent />
       </div>
     </div>
   );
 };
 
-export default PatientRegisteration;
+export default DashboardPatient;
