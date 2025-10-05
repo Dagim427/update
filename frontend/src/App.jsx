@@ -52,6 +52,7 @@ import TriageRoomProfile from "./pages/triage-room/TriageRoomProfile";
 import LabTechnicianProfile from "./pages/lab-technician/LabTechnicianProfile";
 
 import PharmacistDashboard from "./pages/pharmacist/PharmacistDashboard";
+import PrescriptionReadPharma from "./pages/pharmacist/PrescriptionRead";
 
 function App() {
   return (
@@ -334,7 +335,7 @@ function App() {
           path="/pharmacist/prescription-read"
           element={
             // <ProtectedRoute allowedRoles={["patient"]}>
-              <PrescriptionRead />
+              <PrescriptionReadPharma />
             // </ProtectedRoute>
           }
         />
