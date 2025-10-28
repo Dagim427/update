@@ -126,6 +126,9 @@ function Login() {
             case "triage room":
               navigate("/triage-room");
               break;
+            case "pharmacist":
+              navigate("/pharmacist");
+              break;
             default:
               navigate("/patient");
           }

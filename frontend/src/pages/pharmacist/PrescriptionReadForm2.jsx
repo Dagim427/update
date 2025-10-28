@@ -1,45 +1,82 @@
-import React, { useRef, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "../../config/axiosConfig";
 
 function PrescriptionReadForm() {
   const [patientList, setPatientList] = useState([]);
   const [selectedId, setSelectedId] = useState("");
+  const [selectedPatient, setSelectedPatient] = useState(null);
+  const [parsedMedication, setParsedMedication] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
 
-  const selectedPatient = patientList.find((p) => p.patient_id == selectedId);
-
+  // ✅ Fetch patient list once
   useEffect(() => {
     const fetchPatients = async () => {
       try {
-        const res = await axios.get(
-          "pharmacist/prescription-patient-registered"
-        );
-        setPatientList(res.data.registered);
-      } catch (error) {
-        console.error("Failed to fetch patients:", error);
+        const res = await axios.get("/pharmacist/prescription-read");
+        setPatientList(res.data.prescriptions || []);
+      } catch (err) {
+        console.error("Failed to fetch patients:", err);
+        setError("Failed to load patient list.");
       }
     };
     fetchPatients();
   }, []);
 
-  let meds = [];
-  try {
-    meds = JSON.parse(selectedPatient.medication || "[]");
-  } catch (err) {
-    console.warn("Failed to parse medications:", err);
-    meds = [];
-  }
+  // ✅ Fetch prescription when a patient is selected
+  useEffect(() => {
+    if (!selectedId) {
+      setSelectedPatient(null);
+      setParsedMedication([]);
+      return;
+    }
+
+    const fetchPrescription = async () => {
+      setLoading(true);
+      setError("");
+      try {
+        const res = await axios.get(`/pharmacist/prescription-read/${selectedId}`);
+        const patientData = res.data && res.data[0] ? res.data[0] : null;
+        setSelectedPatient(patientData);
+
+        // Parse medication safely
+        if (patientData && patientData.medication) {
+          try {
+            const meds = JSON.parse(patientData.medication);
+            setParsedMedication(meds);
+          } catch (e) {
+            console.warn("Failed to parse medication JSON:", e);
+            setParsedMedication([]);
+          }
+        } else {
+          setParsedMedication([]);
+        }
+      } catch (err) {
+        console.error("Failed to fetch prescription:", err);
+        setError("Failed to load prescription data.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchPrescription();
+  }, [selectedId]);
+
+  // ✅ UI rendering
+  if (loading) return <p>Loading prescription...</p>;
+  if (error) return <p className="text-danger">{error}</p>;
 
   return (
     <main>
       <div className="form-container">
-        <h2 className="text-color fw-bold mb-4">Prescription</h2>
+        <h2 className="text-primary fw-bold mb-4">Patient Prescription</h2>
         <hr />
-
         <fieldset className="border rounded-3 p-4 mb-4 shadow-sm bg-light">
           <legend className="w-auto px-3 text-primary fs-5 fw-semibold">
             Patient Information:
           </legend>
 
+          {/* ✅ Patient selection dropdown */}
           <div className="mb-4">
             <label htmlFor="patientSelect" className="form-label fw-bold">
               Select Patient by ID:
@@ -60,34 +97,31 @@ function PrescriptionReadForm() {
             </select>
           </div>
 
+          {/* ✅ Display patient details */}
           {selectedPatient && (
-            <div className="mb-3">
+            <>
               <div className="row mb-2">
                 <label className="col-sm-3 fw-bold">Patient ID:</label>
                 <div className="col-sm-9">{selectedPatient.patient_id}</div>
               </div>
               <div className="row mb-2">
-                <label className="col-sm-3 fw-bold">Patient MRN:</label>
+                <label className="col-sm-3 fw-bold">MRN:</label>
                 <div className="col-sm-9">{selectedPatient.mrn}</div>
               </div>
-
               <div className="row mb-2">
-                <label className="col-sm-3 fw-bold">Patient Name:</label>
+                <label className="col-sm-3 fw-bold">Name:</label>
                 <div className="col-sm-9">
                   {selectedPatient.first_name} {selectedPatient.last_name}
                 </div>
               </div>
-
               <div className="row mb-2">
-                <label className="col-sm-3 fw-bold">Patient DoB:</label>
+                <label className="col-sm-3 fw-bold">Date of Birth:</label>
                 <div className="col-sm-9">{selectedPatient.dob}</div>
               </div>
-
               <div className="row mb-2">
                 <label className="col-sm-3 fw-bold">Sex:</label>
                 <div className="col-sm-9">{selectedPatient.sex}</div>
               </div>
-
               <div className="row mb-2">
                 <label className="col-sm-3 fw-bold">City:</label>
                 <div className="col-sm-9">{selectedPatient.city}</div>
@@ -96,47 +130,20 @@ function PrescriptionReadForm() {
                 <label className="col-sm-3 fw-bold">Phone Number:</label>
                 <div className="col-sm-9">{selectedPatient.phone_number}</div>
               </div>
-
               <div className="row mb-2">
-                <label className="col-sm-3 fw-bold">Prescribed By:</label>
-                <div className="col-sm-9">
-                  {selectedPatient.doctor_first_name &&
-                  selectedPatient.doctor_last_name ? (
-                    <span className="badge bg-info text-dark">
-                      Dr. {selectedPatient.doctor_first_name}{" "}
-                      {selectedPatient.doctor_last_name}
-                      <span className="ms-2 text-muted">
-                        ({selectedPatient.doctor_specialty})
-                      </span>
-                    </span>
-                  ) : selectedPatient.department_specialty ? (
-                    <span className="badge bg-warning text-dark">
-                      <i className="bi bi-building me-2"></i>
-                      {selectedPatient.department_specialty} Department
-                    </span>
-                  ) : (
-                    <span className="text-muted">
-                      Department information not available
-                    </span>
-                  )}
-                </div>
-              </div>
-              <div className="row mb-2">
-                <label className="col-sm-3 fw-bold">Prescription Date:</label>
-                <div className="col-sm-9">
-                  {selectedPatient.prescription_date || "Not available"}
-                </div>
+                <label className="col-sm-3 fw-bold">Diagnosis:</label>
+                <div className="col-sm-9">{selectedPatient.diagnosis || "N/A"}</div>
               </div>
               <div className="row mb-2">
                 <label className="col-sm-3 fw-bold">Advice:</label>
-                <div className="col-sm-9">
-                  {selectedPatient.advice || "Not available"}
-                </div>
+                <div className="col-sm-9">{selectedPatient.advice || "N/A"}</div>
               </div>
+
+              {/* ✅ Medication table (like ViewLabResultAndPrescriptionById) */}
               <div className="row mb-2">
                 <label className="col-sm-3 fw-bold">Medications:</label>
                 <div className="col-sm-9">
-                  {meds.length > 0 ? (
+                  {parsedMedication.length > 0 ? (
                     <div className="table-responsive">
                       <table className="table table-bordered table-hover">
                         <thead className="table-primary">
@@ -149,12 +156,10 @@ function PrescriptionReadForm() {
                           </tr>
                         </thead>
                         <tbody>
-                          {meds.map((med, index) => (
+                          {parsedMedication.map((med, index) => (
                             <tr key={index}>
-                              <td className="text-center fw-bold">
-                                {index + 1}
-                              </td>
-                              <td className="fw-semibold">{med.medicine}</td>
+                              <td className="text-center fw-bold">{index + 1}</td>
+                              <td>{med.medicine}</td>
                               <td>{med.dosage}</td>
                               <td>{med.frequency}</td>
                               <td>{med.duration}</td>
@@ -164,17 +169,13 @@ function PrescriptionReadForm() {
                       </table>
                     </div>
                   ) : (
-                    <span className="text-muted">
-                      No medications available.
-                    </span>
+                    <span className="text-muted">No medications available.</span>
                   )}
                 </div>
               </div>
-            </div>
+            </>
           )}
         </fieldset>
-
-        <hr />
       </div>
     </main>
   );

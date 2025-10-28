@@ -320,25 +320,24 @@ function App() {
           }
         />
 
-        <Route path="/unauthorized" element={<Unauthorized />} />
-
-         <Route
+        <Route
           path="/pharmacist"
           element={
-            // <ProtectedRoute allowedRoles={["patient"]}>
+            <ProtectedRoute allowedRoles={["pharmacist"]}>
               <PharmacistDashboard />
-            // </ProtectedRoute>
+            </ProtectedRoute>
           }
         />
 
         <Route
           path="/pharmacist/prescription-read"
           element={
-            // <ProtectedRoute allowedRoles={["patient"]}>
+            <ProtectedRoute allowedRoles={["pharmacist"]}>
               <PrescriptionReadPharma />
-            // </ProtectedRoute>
+            </ProtectedRoute>
           }
         />
+        <Route path="/unauthorized" element={<Unauthorized />} />
       </Routes>
     </div>
   );

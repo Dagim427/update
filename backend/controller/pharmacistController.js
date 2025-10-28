@@ -1,6 +1,7 @@
 const { StatusCodes } = require("http-status-codes");
 const {
   prescriptionReadService,
+  prescriptionpatientRegisteredService,
 } = require("../services/pharmacist/prescriptionRead");
 
 async function prescriptionRead(req, res) {
@@ -28,4 +29,15 @@ async function prescriptionRead(req, res) {
   }
 }
 
-module.exports = { prescriptionRead };
+const prescriptionpatientRegistered = async (req, res) => {
+  try {
+    const registered = await prescriptionpatientRegisteredService();
+    res.status(StatusCodes.OK).json({ registered });
+  } catch (error) {
+    console.error("Error fetching registered patients:", error.message);
+    res
+      .status(StatusCodes.INTERNAL_SERVER_ERROR)
+      .json({ msg: "Internal server error" });
+  }
+};
+module.exports = { prescriptionRead, prescriptionpatientRegistered };
