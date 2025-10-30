@@ -35,6 +35,7 @@ function PreTestForm() {
   const allergiesDom = useRef();
   const InitialObservationsDom = useRef();
   const referredToDom = useRef();
+  // console.log("PreTest payload:", PreTest);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -57,6 +58,8 @@ function PreTestForm() {
     };
 
     try {
+      // console.log("PreTest payload:", PreTest);
+
       await axios.post("/triage-room/pre-test", PreTest);
       setSuccessMessage(true);
       setErrorMessage("");
@@ -219,7 +222,7 @@ function PreTestForm() {
             </legend>
 
             <div className="row g-3">
-              <div className="col-md-6">
+              {/* <div className="col-md-6">
                 <label className="form-label fw-bold">Symptoms</label>
                 <input
                   type="text"
@@ -227,7 +230,91 @@ function PreTestForm() {
                   placeholder="Enter Symptoms"
                   ref={symptomsDom}
                 />
+              </div> */}
+              <div className="col-md-6">
+                <label className="form-label fw-bold">Symptoms</label>
+                <div
+                  className="form-control"
+                  style={{
+                    height: "250px",
+                    overflowY: "scroll",
+                    border: "1px solid #ccc",
+                    padding: "10px",
+                  }}
+                >
+                  {[
+                    "Fever",
+                    "Headache",
+                    "Cough",
+                    "Sore throat",
+                    "Runny nose",
+                    "Chest pain",
+                    "Shortness of breath",
+                    "Fatigue / Weakness",
+                    "Dizziness",
+                    "Nausea",
+                    "Vomiting",
+                    "Abdominal pain",
+                    "Diarrhea",
+                    "Constipation",
+                    "Loss of appetite",
+                    "Back pain",
+                    "Joint pain",
+                    "Muscle pain",
+                    "Swelling",
+                    "Skin rash / itching",
+                    "Chills / Sweating",
+                    "Weight loss",
+                    "Palpitations",
+                    "Difficulty urinating",
+                    "Frequent urination",
+                    "Vision problems",
+                    "Ear pain",
+                    "Hearing loss",
+                    "Tooth pain",
+                    "Sleep problems",
+                    "Anxiety / Depression",
+                    "Memory loss",
+                    "Seizures",
+                    "Numbness / Tingling",
+                  ].map((symptom, index) => (
+                    <div key={index} className="form-check">
+                      <input
+                        type="checkbox"
+                        className="form-check-input"
+                        id={`symptom-${index}`}
+                        value={symptom}
+                        onChange={(e) => {
+                          const value = e.target.value;
+                          if (e.target.checked) {
+                            symptomsDom.current.value = [
+                              ...(symptomsDom.current.value
+                                ? symptomsDom.current.value.split(", ")
+                                : []),
+                              value,
+                            ].join(", ");
+                          } else {
+                            symptomsDom.current.value = symptomsDom.current.value
+                              .split(", ")
+                              .filter((s) => s !== value)
+                              .join(", ");
+                          }
+                        }}
+                      />
+                      <label
+                        htmlFor={`symptom-${index}`}
+                        className="form-check-label"
+                      >
+                        {symptom}
+                      </label>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Hidden input to collect the selected symptoms */}
+                <input type="hidden" ref={symptomsDom} />
               </div>
+
 
               <div className="col-md-6">
                 <label className="form-label fw-bold">
@@ -290,7 +377,7 @@ function PreTestForm() {
               Other Notes
             </legend>
 
-            <div className="mb-3">
+            {/* <div className="mb-3">
               <label className="form-label fw-bold">Allergies</label>
               <input
                 type="text"
@@ -298,7 +385,78 @@ function PreTestForm() {
                 placeholder="Enter Allergies"
                 ref={allergiesDom}
               />
+            </div> */}
+
+            <div className="mb-3">
+              <label className="form-label fw-bold">Allergies</label>
+              <div
+                className="form-control"
+                style={{
+                  height: "200px",
+                  overflowY: "scroll",
+                  border: "1px solid #ccc",
+                  padding: "10px",
+                }}
+              >
+                {[
+                  "Penicillin",
+                  "Sulfa drugs",
+                  "Aspirin",
+                  "Ibuprofen",
+                  "Latex",
+                  "Peanuts",
+                  "Tree nuts",
+                  "Shellfish",
+                  "Fish",
+                  "Milk",
+                  "Eggs",
+                  "Wheat",
+                  "Soy",
+                  "Dust mites",
+                  "Pollen",
+                  "Animal dander",
+                  "Insect stings",
+                  "Mold",
+                  "Gluten",
+                  "Food preservatives",
+                  "Fragrances / perfumes",
+                  "Nickel (metal allergy)",
+                  "Other (specify in notes)",
+                ].map((allergy, index) => (
+                  <div key={index} className="form-check">
+                    <input
+                      type="checkbox"
+                      className="form-check-input"
+                      id={`allergy-${index}`}
+                      value={allergy}
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        if (e.target.checked) {
+                          allergiesDom.current.value = [
+                            ...(allergiesDom.current.value
+                              ? allergiesDom.current.value.split(", ")
+                              : []),
+                            value,
+                          ].join(", ");
+                        } else {
+                          allergiesDom.current.value = allergiesDom.current.value
+                            .split(", ")
+                            .filter((a) => a !== value)
+                            .join(", ");
+                        }
+                      }}
+                    />
+                    <label htmlFor={`allergy-${index}`} className="form-check-label">
+                      {allergy}
+                    </label>
+                  </div>
+                ))}
+              </div>
+
+              {/* Hidden input to collect selected allergies */}
+              <input type="hidden" ref={allergiesDom} />
             </div>
+
 
             <div className="mb-3">
               <label className="form-label fw-bold">

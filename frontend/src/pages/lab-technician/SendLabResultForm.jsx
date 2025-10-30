@@ -161,6 +161,23 @@ function SendLabResultForm() {
                 </div>
 
                 <div className="row mb-2">
+                  <label className="col-sm-3 fw-bold">
+                    HPI:
+                  </label>
+                  <div className="col-sm-9">
+                    {selectedPatient.hpi}
+                  </div>
+                </div>
+
+                <div className="row mb-2">
+                  <label className="col-sm-3 fw-bold">
+                    Physical exam:
+                  </label>
+                  <div className="col-sm-9">
+                    {selectedPatient.physical_exam}
+                  </div>
+                </div>
+                <div className="row mb-2">
                   <label className="col-sm-3 fw-bold">Lab Request:</label>
                   <div className="col-sm-9">{selectedPatient.lab_request}</div>
                 </div>

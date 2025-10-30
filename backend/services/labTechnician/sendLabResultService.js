@@ -37,7 +37,9 @@ const patientDoctorRegisteredService = async () => {
   vs.pulse_rate, 
   vs.respiratory_rate, 
   vs.blood_glucose_level, 
-  de.lab_request
+  de.lab_request,
+  de.hpi,
+  de.physical_exam
 FROM patient_info pi
 LEFT JOIN doctor_evalution de ON pi.patient_id = de.patient_id
 LEFT JOIN vital_signs vs ON pi.patient_id = vs.patient_id

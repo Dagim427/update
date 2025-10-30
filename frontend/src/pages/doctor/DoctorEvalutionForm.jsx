@@ -189,7 +189,7 @@ function DoctorEvalutionForm() {
               Evaluation Form:
             </legend>
 
-            <div className="mb-4">
+            {/* <div className="mb-4">
               <label
                 htmlFor="historyOfPresentIllness"
                 className="form-label fw-bold"
@@ -203,9 +203,103 @@ function DoctorEvalutionForm() {
                 placeholder="Enter History of Present Illness"
                 ref={hpiDom}
               />
-            </div>
+            </div> */}
 
             <div className="mb-4">
+              <label className="form-label fw-bold">History of Present Illness</label>
+              <div
+                className="form-control"
+                style={{
+                  height: "200px",
+                  overflowY: "scroll",
+                  border: "1px solid #ccc",
+                  padding: "10px",
+                }}
+              >
+                {[
+                  "Fever",
+                  "Cough",
+                  "Shortness of breath",
+                  "Chest pain",
+                  "Headache",
+                  "Dizziness",
+                  "Nausea / Vomiting",
+                  "Abdominal pain",
+                  "Diarrhea",
+                  "Loss of appetite",
+                  "Fatigue",
+                  "Back pain",
+                  "Joint pain",
+                  "Sore throat",
+                  "Skin rash",
+                  "Swelling (edema)",
+                  "Palpitations",
+                  "Urinary frequency / burning",
+                  "Weight loss",
+                  "Weight gain",
+                  "Blurred vision",
+                  "Hearing loss",
+                  "Tremors",
+                  "Confusion",
+                  "Seizures",
+                  "Depression",
+                  "Anxiety",
+                  "Sleep disturbance",
+                  "Bleeding / bruising",
+                  "Other (specify below)",
+                ].map((hpi, index) => (
+                  <div key={index} className="form-check">
+                    <input
+                      type="checkbox"
+                      className="form-check-input"
+                      id={`hpi-${index}`}
+                      value={hpi}
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        if (e.target.checked) {
+                          hpiDom.current.value = [
+                            ...(hpiDom.current.value
+                              ? hpiDom.current.value.split(", ")
+                              : []),
+                            value,
+                          ].join(", ");
+                        } else {
+                          hpiDom.current.value = hpiDom.current.value
+                            .split(", ")
+                            .filter((s) => s !== value)
+                            .join(", ");
+                        }
+                      }}
+                    />
+                    <label htmlFor={`hpi-${index}`} className="form-check-label">
+                      {hpi}
+                    </label>
+                  </div>
+                ))}
+              </div>
+
+              {/* Optional text area for additional notes */}
+              <textarea
+                className="form-control mt-2"
+                rows="2"
+                placeholder="Other findings or notes"
+                onBlur={(e) => {
+                  const base = hpiDom.current.value
+                    ? hpiDom.current.value.split(", ")
+                    : [];
+                  const custom = e.target.value.trim();
+                  const filtered = base.filter(Boolean);
+                  if (custom && !filtered.includes(custom)) filtered.push(custom);
+                  hpiDom.current.value = filtered.join(", ");
+                }}
+              ></textarea>
+
+              {/* Hidden input to store combined HPI items */}
+              <input type="hidden" ref={hpiDom} />
+            </div>
+
+
+            {/* <div className="mb-4">
               <label
                 htmlFor="physicalExamFindings"
                 className="form-label fw-bold"
@@ -219,7 +313,101 @@ function DoctorEvalutionForm() {
                 placeholder="Enter Physical Examination Findings"
                 ref={physicalExamDom}
               ></textarea>
+            </div> */}
+
+            <div className="mb-4">
+              <label className="form-label fw-bold">Physical Examination Findings</label>
+              <div
+                className="form-control"
+                style={{
+                  height: "200px",
+                  overflowY: "scroll",
+                  border: "1px solid #ccc",
+                  padding: "10px",
+                }}
+              >
+                {[
+                  "Patient alert and oriented",
+                  "Pale conjunctiva",
+                  "Jaundiced sclera",
+                  "Dehydrated",
+                  "No acute distress",
+                  "Normal heart sounds (S1, S2)",
+                  "Heart murmur",
+                  "Irregular pulse",
+                  "Normal breath sounds",
+                  "Wheezing",
+                  "Crackles (rales)",
+                  "Abdomen soft, non-tender",
+                  "Abdominal tenderness",
+                  "Distended abdomen",
+                  "Liver enlarged",
+                  "Spleen enlarged",
+                  "Peripheral edema",
+                  "Cyanosis",
+                  "Skin rash",
+                  "Lymph nodes palpable",
+                  "Normal gait",
+                  "Weakness on right side",
+                  "Weakness on left side",
+                  "Normal reflexes",
+                  "Abnormal reflexes",
+                  "Oral lesions",
+                  "Neck stiffness",
+                  "Back tenderness",
+                  "Joint swelling",
+                  "Normal genital exam",
+                  "No abnormal findings",
+                ].map((finding, index) => (
+                  <div key={index} className="form-check">
+                    <input
+                      type="checkbox"
+                      className="form-check-input"
+                      id={`exam-${index}`}
+                      value={finding}
+                      onChange={(e) => {
+                        const value = e.target.value;
+                        if (e.target.checked) {
+                          physicalExamDom.current.value = [
+                            ...(physicalExamDom.current.value
+                              ? physicalExamDom.current.value.split(", ")
+                              : []),
+                            value,
+                          ].join(", ");
+                        } else {
+                          physicalExamDom.current.value = physicalExamDom.current.value
+                            .split(", ")
+                            .filter((s) => s !== value)
+                            .join(", ");
+                        }
+                      }}
+                    />
+                    <label htmlFor={`exam-${index}`} className="form-check-label">
+                      {finding}
+                    </label>
+                  </div>
+                ))}
+              </div>
+
+              {/* Optional field for custom notes */}
+              <textarea
+                className="form-control mt-2"
+                rows="2"
+                placeholder="Other findings or notes"
+                onBlur={(e) => {
+                  const base = physicalExamDom.current.value
+                    ? physicalExamDom.current.value.split(", ")
+                    : [];
+                  const custom = e.target.value.trim();
+                  const filtered = base.filter(Boolean);
+                  if (custom && !filtered.includes(custom)) filtered.push(custom);
+                  physicalExamDom.current.value = filtered.join(", ");
+                }}
+              ></textarea>
+              {/* Hidden input to store combined findings */}
+              <input type="hidden" ref={physicalExamDom} />
             </div>
+
           </fieldset>
           <fieldset className="border rounded-3 p-4 mb-4 shadow-sm bg-light">
             <legend className="w-auto px-3 text-primary fs-5 fw-semibold mb-3">
